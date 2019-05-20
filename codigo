@@ -1,0 +1,93 @@
+library(tidyverse)
+# datos
+
+# survey1: Cuál es el mayor uso que le das a R en tus análisis? 
+survey1 <- tibble(
+  # preguntas
+  option = c(
+    "Modelos",
+    "Gráficos",
+    "Análisis",
+    "Limpieza de datos",
+    "GIS",
+    "Mapas",
+    "Dashboards",
+    "WebScraping",
+    "GIS, Mapas y Modelos",
+    "Otro",
+    "sumar"
+  ),
+  count = c(157, 87, 58, 25, 19, 9, 5, 5, 3, 2, 1)
+)
+
+
+# survey2: ¿Cuál de estos modelos utilizas con mayor frecuencia?
+survey2 <- tibble(
+  # preguntas
+  option = c(
+    "Regresión Lineal",
+    "Regresión Logística",
+    "Árboles de decisión",
+    "K-means",
+    "PCA",
+    "Random Forest",
+    "Vectores Autorregresivos",
+    "arima",
+    "Regresión Adaptativa",
+    "Naive Bayes",
+    "k-nearest neighbors",
+    "GLMs",
+    "Cópulas y subcópulas",
+    "Espacio Temporal"
+  ),
+  count = c(102, 43, 33, 12, 11, 6, 6, 4, 4, 4, 3, 2, 1, 1)
+)
+
+
+# survey3: que visualizacion utilizas mas seguido
+survey3 <- tibble(
+  # preguntas
+  option = c(
+    "Gráficos de línea",
+    "Gráficos de barra",
+    "Gráficos de puntos",
+    "Histogramas",
+    "Mi cerebro",
+    "Caja y bigotes",
+    "Mapas con puntos",
+    "Gráficos burbuja",
+    "ACP y Dendogramas",
+    "Diagrama tallo hoja"
+  ),
+  count = c(63, 45, 30, 12, 8, 5, 5, 4, 3, 2)
+)
+
+
+
+bar_chart_survey <- function(survey){
+  # function to produce bar_chart
+  survey %>%
+    arrange(count, desc(count)) %>%
+    mutate(option = factor(option, option)) %>%
+    ggplot(aes(x = option, y = count, fill = option)) +
+    geom_bar(stat = "identity") +
+    coord_flip() + 
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          plot.title = element_text(size = rel(1)),
+          axis.text=element_text(size=rel(2)))
+}
+
+
+# graficas
+bar_chart_survey(survey1) +
+  labs(title = 'Survey 1 - 14 de marzo 2019',
+       subtitle = '¿Cuál es el mayor uso que le das a R en tus análisis?')
+
+bar_chart_survey(survey2) +
+  labs(title = 'Survey 2 - 22 de marzo 2019',
+       subtitle = '¿Cuál de estos modelos utilizas con mayor frecuencia?')
+
+bar_chart_survey(survey3) +
+  labs(title = 'Survey 3 - 29 de marzo de 2019',
+       subtitle = '¿Qué tipo de visualización utilizar más seguido?')
